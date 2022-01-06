@@ -5,33 +5,37 @@ import ReactPaginate from 'react-paginate';
 
 const Myfile = () => {
     const [item, setItem] = useState()
-    
-    
+    const [loading, setLoading] = useState(false)
+
     useEffect(() => {
         const result = async () => {
-            const rsp = await fetch("http://localhost:3004/comments?_page=1&_limit=12")
+            const rsp = await fetch("https://jsonplaceholder.typicode.com/comments?_page=1&_limit=5")
             const data = await rsp.json();
             setItem(data)
+            // setLoading(true)
             // console.log("....",data)
         }
         result()
     }, [])
-    
-    
+
+
     const fetchdata = async (currentpage) => {
-        const rsps = await fetch(`http://localhost:3004/comments?_page=${currentpage}&_limit=12`
+        const rsps = await fetch(`https://jsonplaceholder.typicode.com/comments?_page=${currentpage}&_limit=5`
         );
         const detail = await rsps.json();
+        // setLoading(true)
         return detail
     }
-    
-    const handlePageClick = async (data) => {
-        console.log("clicked", data.selected)
-        let currentpage = data.selected + 1  
-        const commentsFormServer = await fetchdata(currentpage);
 
+    const handlePageClick = async (data) => {
+        // console.log("clicked", data.selected)
+        let currentpage = data.selected + 1
+        console.log("cuurent", currentpage)
+        const commentsFormServer = await fetchdata(currentpage);
         setItem(commentsFormServer);
+        // setLoading(true)
     }
+
     return (
 
         <div className="container">
@@ -57,7 +61,7 @@ const Myfile = () => {
                 previousLabel={"previous"}
                 nextLabel={"next"}
                 breakLabel={"..."}
-                pageCount={15}
+                pageCount={20}
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={3}
                 onPageChange={handlePageClick}
